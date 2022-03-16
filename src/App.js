@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    let sendMessage = () => {
+        alert('Hey')
+    }
+
+    return (
+        <div className="App">
+
+            <div className={'chat'}>
+                <div className={'messages'}>
+                    <div className={'message'}>
+                        <img/> <b>Dima</b> <span>Hello guys</span>
+                    </div>
+
+                    <div className={'message'}>
+                        <img/> <b>Andre</b> <span>Hello guys</span>
+                    </div>
+
+                </div>
+                <div className={'footer'}>
+                    <textarea/>
+                    <button onClick={sendMessage}>send</button>
+                </div>
+            </div>
+
+        </div>
+    );
 }
 
 export default App;
