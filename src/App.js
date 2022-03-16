@@ -1,18 +1,27 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 function App() {
 
+    let messagesBlockRef = useRef()
+
     let [messageText, setMessageText] = useState('')
-    let [users, setUsers] = useState([
-        {id: 1, name: 'Andre', photo: 'https://via.placeholder.com/50', message: 'Yo!'}
-    ])
-    let ws;
-    useEffect(() => {
-        ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
+    let [ws, setWS] = useState(null)
+    let [users, setUsers] = useState([])
+
+    if (ws) {
         ws.onmessage = (messageEvent) => {
+            let messages = JSON.parse(messageEvent.data)
             console.log(messageEvent);
+            setUsers([...users, ...messages])
+            messagesBlockRef.current.scrollTo(0,messagesBlockRef.current.scrollHeight)
         }
+    }
+
+    useEffect(() => {
+
+        let localWS = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
+        setWS(localWS)
     }, [])
 
     let onMessageChange = (e) => {
@@ -21,19 +30,20 @@ function App() {
 
     let sendMessage = () => {
         ws.send(messageText)
+        setMessageText('')
     }
 
     return (
         <div className="App">
 
             <div className={'chat'}>
-                <div className={'messages'}>
-                    {users.map(u => <div className={'message'}>
-                        <img src={u.photo}/> <b>{u.name}</b> <span>{u.message}</span>
+                <div className={'messages'} ref={messagesBlockRef}>
+                    {users.map((u, index) => <div className={'message'} key={index}>
+                        <img src={u.photo}/> <b>{u.userName}</b> <span>{u.message}</span>
                     </div>)}
                 </div>
                 <div className={'footer'}>
-                    <textarea onChange={onMessageChange}>{messageText}</textarea>
+                    <textarea onChange={onMessageChange} value={messageText}/>
                     <button onClick={sendMessage}>Send</button>
                 </div>
             </div>
