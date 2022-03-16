@@ -1,19 +1,26 @@
 import './App.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function App() {
 
-    const [message, setMessage] = useState('')
-    const [users, setUsers] = useState([
+    let [messageText, setMessageText] = useState('')
+    let [users, setUsers] = useState([
         {id: 1, name: 'Andre', photo: 'https://via.placeholder.com/50', message: 'Yo!'}
     ])
+    let ws;
+    useEffect(() => {
+        ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
+        ws.onmessage = (messageEvent) => {
+            console.log(messageEvent);
+        }
+    }, [])
 
     let onMessageChange = (e) => {
-        setMessage(e.currentTarget.value)
+        setMessageText(e.currentTarget.value)
     }
 
     let sendMessage = () => {
-        alert(message)
+        ws.send(messageText)
     }
 
     return (
@@ -26,7 +33,7 @@ function App() {
                     </div>)}
                 </div>
                 <div className={'footer'}>
-                    <textarea onChange={onMessageChange}>{message}</textarea>
+                    <textarea onChange={onMessageChange}>{messageText}</textarea>
                     <button onClick={sendMessage}>Send</button>
                 </div>
             </div>
