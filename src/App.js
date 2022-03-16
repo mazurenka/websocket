@@ -14,12 +14,11 @@ function App() {
             let messages = JSON.parse(messageEvent.data)
             console.log(messageEvent);
             setUsers([...users, ...messages])
-            messagesBlockRef.current.scrollTo(0,messagesBlockRef.current.scrollHeight)
+            messagesBlockRef.current.scrollTo(0, messagesBlockRef.current.scrollHeight)
         }
     }
 
     useEffect(() => {
-
         let localWS = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
         setWS(localWS)
     }, [])
