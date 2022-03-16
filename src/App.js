@@ -6,7 +6,7 @@ function App() {
         alert('Hey')
     }
 
-    return (
+     return (
         <div className="App">
 
             <div className={'chat'}>
