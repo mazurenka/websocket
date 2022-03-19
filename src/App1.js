@@ -3,19 +3,22 @@ import {useEffect, useRef, useState} from "react";
 
 export function AppContainer(props) {
 
-    let [age, setAge] = useState(30)
+    let [age, setAge] = useState(18)
 
     return (
         <div className="App">
-            <App {...props} />
+            <App {...props} age={age} satAge={setAge()} />
         </div>
     );
 }
 
-function App({age = 'no age'}) {
+function App({age = 'no age', setAge}) {
     return (
         <div className="App">
-            age: {age}
+            <div>age: {age}</div>
+            <div>
+                <button onClick={ () => {setAge(age + 1)} } >inc</button>
+            </div>
         </div>
     );
 }
