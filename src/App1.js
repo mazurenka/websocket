@@ -1,13 +1,15 @@
 import './App.css';
-import {useEffect, useRef, useState} from "react";
+import {useState} from "react";
 
 export function AppContainer(props) {
-
-    let [age, setAge] = useState(18)
-
+    const [age, setAge] = useState(18)
     return (
-        <div className="App">
-            <App {...props} age={age} satAge={setAge()} />
+        <div>
+            <App {...props} age={age}/>
+            <button onClick={() => {
+                setAge(age * 10000)
+            }}>+
+            </button>
         </div>
     );
 }
@@ -17,7 +19,10 @@ function App({age = 'no age', setAge}) {
         <div className="App">
             <div>age: {age}</div>
             <div>
-                <button onClick={ () => {setAge(age + 1)} } >inc</button>
+                <button onClick={() => {
+                    setAge(age + 1)
+                }}>inc
+                </button>
             </div>
         </div>
     );
