@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {AppContainer} from "./App1";
+import {HocVsHook} from "./HocVsHook";
+
 
 ReactDOM.render(
     <React.StrictMode>
-        <AppContainer/>
+        <HocVsHook/>
 
     </React.StrictMode>,
     document.getElementById('root')
