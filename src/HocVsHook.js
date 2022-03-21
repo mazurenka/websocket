@@ -32,6 +32,20 @@ const withLocalStorageSaving = (lsKey) => (Component) => {
     return LocalStorageSaving
 }
 
+const useLocalStorageSaving = (lsKey, value) => {
+    const [currentValue, setValue] = useState(value)
+    const onChange = (e) => {
+        setValue(e.currentTarget.value)
+        localStorage.setItem(lsKey, e.currentTarget.value)
+    }
+
+    useEffect(() => {
+        const value = localStorage.getItem(lsKey) || ''
+        setValue(value)
+    }, [])
+    return [currentValue, onChange]
+}
+
 let Textarea = ({limit, value = '', ...props}) => {
     let divStyles = {
         position: 'relative',
@@ -49,9 +63,12 @@ let Textarea = ({limit, value = '', ...props}) => {
         bottom: '3px'
     }
 
+    let [currentValue, onChange] = useLocalStorageSaving('textarea', value)
+
     return <div style={divStyles}>
         <textarea maxLength={limit}
-                  value={value}
+                  onChange={onChange}
+                  value={currentValue}
                   style={textareaStyles}
                   {...props}
         />
