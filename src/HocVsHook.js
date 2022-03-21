@@ -1,11 +1,12 @@
 import './App.css';
 import {useEffect, useRef, useState} from "react";
 
-export function HocVsHook01() {
+export function HocVsHook() {
     return (
         <div className="App">
             <div className={'chat'}>
                 <Select values={['Minsk', "Moscow", 'Kiev']} value={'Moscow'}/>
+                <Input placeholder={'Name'}/>
                 <Textarea limit={10} value={''} placeholder={'Comment'}/>
             </div>
         </div>
@@ -13,12 +14,12 @@ export function HocVsHook01() {
 }
 
 const withLocalStorageSaving = (lsKey) => (Component) => {
-    return ({value, ...props}) => {
+    let LocalStorageSaving = ({value, ...props}) => {
 
         const [currentValue, setValue] = useState(value)
         const onChange = (e) => {
             setValue(e.currentTarget.value)
-            localStorage.setItem('lsKey', e.currentTarget.value)
+            localStorage.setItem(lsKey, e.currentTarget.value)
         }
 
         useEffect(() => {
@@ -28,6 +29,7 @@ const withLocalStorageSaving = (lsKey) => (Component) => {
 
         return <Component  {...props} onChange={onChange} value={currentValue}/>
     }
+    return LocalStorageSaving
 }
 
 let Textarea = ({limit, value = '', ...props}) => {
@@ -50,8 +52,9 @@ let Textarea = ({limit, value = '', ...props}) => {
     return <div style={divStyles}>
         <textarea maxLength={limit}
                   value={value}
+                  style={textareaStyles}
                   {...props}
-                  style={textareaStyles}/>
+        />
         <span style={spanStyles}>{limit - value.length}</span>
     </div>
 }
@@ -63,6 +66,8 @@ let Input = (props) => {
         <input {...props} />
     </div>
 }
+
+Input = withLocalStorageSaving('input')(Input)
 
 let Select = ({values, ...props}) => {
     return <select  {...props} >

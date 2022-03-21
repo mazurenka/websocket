@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {HocVsHook01} from "./HocVsHook01";
+import {HocVsHook} from "./HocVsHook";
 
 
 ReactDOM.render(
     <React.StrictMode>
-        <HocVsHook01/>
+        <HocVsHook/>
 
     </React.StrictMode>,
     document.getElementById('root')
