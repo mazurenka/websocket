@@ -6,13 +6,13 @@ export function HocVsHook() {
         <div className="App">
             <div className={'chat'}>
                 <Select values={['Minsk', "Moscow", 'Kiev']}/>
-                <Textarea limit={10} value={'Yo'} placeholder={'Comment'}/>
+                <Textarea limit={10} value={''} placeholder={'Comment'}/>
             </div>
         </div>
     );
 }
 
-export const Textarea = ({limit, value, ...props}) => {
+export const Textarea = ({limit, value = '', ...props}) => {
     let divStyles = {
         position: 'relative',
         width: '300px',
@@ -28,7 +28,9 @@ export const Textarea = ({limit, value, ...props}) => {
         right: '3px',
         bottom: '3px'
     }
+
     const [currentValue, setValue] = useState(value)
+
     const onChange = (e) => {
         setValue(e.currentTarget.value)
     }
@@ -39,7 +41,7 @@ export const Textarea = ({limit, value, ...props}) => {
                   value={currentValue}
                   {...props}
                   style={textareaStyles}/>
-        <span style={spanStyles}>{limit}</span>
+        <span style={spanStyles}>{limit - currentValue.length}</span>
     </div>
 }
 
