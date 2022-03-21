@@ -12,7 +12,25 @@ export function HocVsHook01() {
     );
 }
 
-export const Textarea = ({limit, value = '', ...props}) => {
+const withLocalStorageSaving = (lsKey) => (Component) => {
+    return ({value, ...props}) => {
+
+        const [currentValue, setValue] = useState(value)
+        const onChange = (e) => {
+            setValue(e.currentTarget.value)
+            localStorage.setItem('lsKey', e.currentTarget.value)
+        }
+
+        useEffect(() => {
+            const value = localStorage.getItem('lsKey') || ''
+            setValue(value)
+        }, [])
+
+        return <Component  {...props} onChange={onChange} value={currentValue}/>
+    }
+}
+
+let Textarea = ({limit, value = '', ...props}) => {
     let divStyles = {
         position: 'relative',
         width: '300px',
@@ -29,46 +47,30 @@ export const Textarea = ({limit, value = '', ...props}) => {
         bottom: '3px'
     }
 
-    const [currentValue, setValue] = useState(value)
-
-    const onChange = (e) => {
-        setValue(e.currentTarget.value)
-        localStorage.setItem('textarea', e.currentTarget.value)
-    }
-
-    useEffect(() => {
-        const value = localStorage.getItem('textarea') || ''
-        setValue(value)
-    }, [])
-
     return <div style={divStyles}>
         <textarea maxLength={limit}
-                  onChange={onChange}
-                  value={currentValue}
+                  value={value}
                   {...props}
                   style={textareaStyles}/>
-        <span style={spanStyles}>{limit - currentValue.length}</span>
+        <span style={spanStyles}>{limit - value.length}</span>
     </div>
 }
 
-export const Select = ({values, value='', ...props}) => {
+Textarea = withLocalStorageSaving('textarea')(Textarea)
 
-    const [currentValue, setValue] = useState(value)
+let Input = (props) => {
+    return <div>
+        <input {...props} />
+    </div>
+}
 
-    const onChange = (e) => {
-        setValue(e.currentTarget.value)
-        localStorage.setItem('select', e.currentTarget.value)
-    }
-
-    useEffect(() => {
-        const value = localStorage.getItem('select') || ''
-        setValue(value)
-    }, [])
-
-    return <select value={currentValue} {...props} onChange={onChange} >
+let Select = ({values, ...props}) => {
+    return <select  {...props} >
         {values.map(v => <option>{v}</option>)}
     </select>
 }
+
+Select = withLocalStorageSaving('select')(Select)
 
 
 
