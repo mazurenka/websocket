@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from "react";
+import * as React from "react";
+import {useEffect, useState} from "react";
 import {ProfileType, UserType} from "./types";
 import {profileAPI, usersAPI} from "./api";
 
-export function UsersManagement() {
+function UsersManagement() {
     const [users, setUsers] = useState<Array<UserType>>([])
     const [profile, setProfile] = useState<ProfileType | null>(null)
 
@@ -10,7 +11,7 @@ export function UsersManagement() {
 
     useEffect(() => {
         const requestUsers = async () => {
-            let result = await usersAPI.getUsers()
+            let result = await usersAPI.getUsers(329, 10)
             setUsers(result.items)
         }
         requestUsers()
@@ -61,7 +62,7 @@ function Details(props: DetailsPropsType) {
     )
 }
 
-
+export default UsersManagement
 
 
 
