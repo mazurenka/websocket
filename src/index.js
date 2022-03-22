@@ -5,11 +5,12 @@ import reportWebVitals from './reportWebVitals';
 import {HocVsHook01} from "./HocVsHook01";
 import {HocVsHook} from "./HocVsHook";
 import {App2} from "./App2";
+import {UsersManagement} from "./UsersManagement";
 
 
 ReactDOM.render(
     <React.StrictMode>
-        <App2/>
+        <UsersManagement/>
 
     </React.StrictMode>,
     document.getElementById('root')
