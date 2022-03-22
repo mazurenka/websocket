@@ -1,20 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from "react";
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import {HocVsHook01} from "./HocVsHook01";
-import {HocVsHook} from "./HocVsHook";
-import {App2} from "./App2";
 import UsersManagement from "./UsersManagement";
-
-
+import * as ReactDOM from "react-dom";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <UsersManagement/>
-
-    </React.StrictMode>,
-    document.getElementById('root')
+    <UsersManagement/>, document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {ProfileType, UserType} from "./types";
 import {profileAPI, usersAPI} from "./api";
 
@@ -7,7 +7,7 @@ function UsersManagement() {
     const [users, setUsers] = useState<Array<UserType>>([])
     const [profile, setProfile] = useState<ProfileType | null>(null)
 
-    console.log('App render')
+    console.log('App rendered')
 
     useEffect(() => {
         const requestUsers = async () => {
@@ -17,14 +17,17 @@ function UsersManagement() {
         requestUsers()
     }, [])
 
-    const loadProfile = async (userId: number) => {
-        let result = await profileAPI.getProfile(userId)
-        setProfile(result.data)
-    }
+    const loadProfile = useCallback((userId: number) => {
+        const loadProfile = async () => {
+            let result = await profileAPI.getProfile(userId)
+            setProfile(result)
+        }
+        loadProfile()
+    }, [setProfile])
 
     return (
         <div className={'App'}>
-            <List users={users} onClick={loadProfile} />
+            <List users={users} onClick={loadProfile}/>
             <Details profile={profile}/>
         </div>
     )
@@ -35,14 +38,14 @@ type UsersPropsType = {
     onClick: (userId: number) => void
 }
 
-function List(props: UsersPropsType) {
+const List = React.memo(function (props: UsersPropsType) {
     console.log('Users render')
     return (
         <ul>
-            {props.users.map(u => <li onClick={() => props.onClick(u.id)} >{u.name}</li>)}
+            {props.users.map(u => <li key={u.id} onClick={() => props.onClick(u.id)}>{u.name}</li>)}
         </ul>
     )
-}
+})
 
 type DetailsPropsType = {
     profile: ProfileType
@@ -62,7 +65,7 @@ function Details(props: DetailsPropsType) {
     )
 }
 
-export default UsersManagement
+export default UsersManagement;
 
 
 
