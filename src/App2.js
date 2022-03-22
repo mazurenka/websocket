@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useMemo, useState} from "react";
 
 
 export function App2() {
@@ -9,16 +9,21 @@ export function App2() {
     const onPlusClick = () => {
         setCounter(counter + 1)
     }
-
-    const onClickIncrement = () => {
+    const onYearIncrement = useCallback(() => {
         setYear(year + 1)
-    }
+    }, [year])
+
+    /*let onYearIncrement = useMemo(() => {
+        return () => {
+            setYear(year + 1)
+        }
+    }, [year])*/
 
     return (
         <div className={'App'}>
             <Counter counter={counter}/>
             <Buttons onPlusClick={onPlusClick}/>
-            <Footer year={year} onClickIncrement={onClickIncrement} />
+            <Footer year={year} onYearIncrement={onYearIncrement}/>
         </div>
     )
 }
@@ -45,7 +50,8 @@ const Footer = React.memo(function Footer(props) {
     console.log('Footer Render')
     return (
         <div>
-            FOOTER {props.year} <button onClick={props.onClickIncrement} >+</button>
+            FOOTER {props.year}
+            <button onClick={props.onYearIncrement}>+</button>
         </div>
     )
 })
