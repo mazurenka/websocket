@@ -86,13 +86,14 @@ let Input = (props) => {
 
 Input = withLocalStorageSaving('input')(Input)
 
-let Select = ({values, ...props}) => {
-    return <select  {...props} >
+let Select = ({values, value, ...props}) => {
+    let [currentValue, onChange] = useLocalStorageSaving('select', value)
+
+    return <select value={currentValue}  {...props} onChange={onChange}>
         {values.map(v => <option>{v}</option>)}
     </select>
 }
 
-Select = withLocalStorageSaving('select')(Select)
 
 
 
