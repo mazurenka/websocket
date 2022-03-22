@@ -5,13 +5,20 @@ export function App2() {
     const [counter, setCounter] = useState(0)
     const [year, setYear] = useState(2022)
     console.log('App render')
+
+    const onPlusClick = () => {
+        setCounter(counter + 1)
+    }
+
+    const onClickIncrement = () => {
+        setYear(year + 1)
+    }
+
     return (
         <div className={'App'}>
             <Counter counter={counter}/>
-            <Buttons onPlusClick={() => {
-                setCounter(counter + 1)
-            }}/>
-            <Footer year={year}/>
+            <Buttons onPlusClick={onPlusClick}/>
+            <Footer year={year} onClickIncrement={onClickIncrement} />
         </div>
     )
 }
@@ -38,7 +45,7 @@ const Footer = React.memo(function Footer(props) {
     console.log('Footer Render')
     return (
         <div>
-            FOOTER {props.year}
+            FOOTER {props.year} <button onClick={props.onClickIncrement} >+</button>
         </div>
     )
 })
