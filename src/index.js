@@ -4,11 +4,12 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {HocVsHook01} from "./HocVsHook01";
 import {HocVsHook} from "./HocVsHook";
+import {App2} from "./App2";
 
 
 ReactDOM.render(
     <React.StrictMode>
-        <HocVsHook/>
+        <App2/>
 
     </React.StrictMode>,
     document.getElementById('root')
