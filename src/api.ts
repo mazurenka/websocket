@@ -1,5 +1,5 @@
 import axios from "axios";
-import {UserType} from "./types";
+import {PhotosType, ProfileType, UserType} from "./types";
 
 export const instance = axios.create({
     withCredentials: true,
@@ -45,6 +45,34 @@ export const usersAPI = {
     },
     unfollow(userId: number) {
         return instance.delete(`follow/${userId}`).then(res => res.data) as Promise<APIResponseType>
+    }
+}
+
+type SavePhotoResponseDataType = {
+    photos: PhotosType
+}
+
+export const profileAPI = {
+    getProfile(userId: number) {
+        return instance.get<ProfileType>(`profile/` + userId).then(res => res.data)
+    },
+    getStatus(userId: number) {
+        return instance.get<string>(`profile/status/` + userId).then(res => res.data)
+    },
+    updateStatus(status: string) {
+        return instance.put<APIResponseType>(`profile/status/`, {status: status}).then(res => res.data)
+    },
+    savePhoto(photoFile: File) {
+        const formData = new FormData()
+        formData.append('image', photoFile)
+        return instance.put<APIResponseType<SavePhotoResponseDataType>>(`profile/photo`, photoFile, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(res => res.data)
+    },
+    saveProfile(profile: ProfileType) {
+        return instance.put<APIResponseType>(`profile`, profile).then(res => res.data)
     }
 }
 

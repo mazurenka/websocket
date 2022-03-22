@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {ProfileType, UserType} from "./types";
-import {usersAPI} from "./api";
-
+import {profileAPI, usersAPI} from "./api";
 
 export function UsersManagement() {
     const [users, setUsers] = useState<Array<UserType>>([])
-    const [profile, setProfile] = useState(null)
+    const [profile, setProfile] = useState<ProfileType | null>(null)
 
     console.log('App render')
 
@@ -17,9 +16,14 @@ export function UsersManagement() {
         requestUsers()
     }, [])
 
+    const loadProfile = async (userId: number) => {
+        let result = await profileAPI.getProfile(userId)
+        setProfile(result.data)
+    }
+
     return (
         <div className={'App'}>
-            <List users={users}/>
+            <List users={users} onClick={loadProfile} />
             <Details profile={profile}/>
         </div>
     )
@@ -27,13 +31,14 @@ export function UsersManagement() {
 
 type UsersPropsType = {
     users: UserType[]
+    onClick: (userId: number) => void
 }
 
 function List(props: UsersPropsType) {
     console.log('Users render')
     return (
         <ul>
-            {props.users.map(u => <li>{u.name}</li>)}
+            {props.users.map(u => <li onClick={() => props.onClick(u.id)} >{u.name}</li>)}
         </ul>
     )
 }
