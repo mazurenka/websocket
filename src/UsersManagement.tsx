@@ -3,12 +3,8 @@ import {useCallback, useEffect, useState} from "react";
 import {ProfileType, UserType} from "./types";
 import {profileAPI, usersAPI} from "./api";
 
-function UsersManagement() {
+const useUsers = () => {
     const [users, setUsers] = useState<Array<UserType>>([])
-    const [profile, setProfile] = useState<ProfileType | null>(null)
-
-    console.log('App rendered')
-
     useEffect(() => {
         const requestUsers = async () => {
             let result = await usersAPI.getUsers(329, 10)
@@ -16,6 +12,15 @@ function UsersManagement() {
         }
         requestUsers()
     }, [])
+    return users
+}
+
+function UsersManagement() {
+    const [profile, setProfile] = useState<ProfileType | null>(null)
+
+    console.log('App rendered')
+
+   const users = useUsers()
 
     const loadProfile = useCallback((userId: number) => {
         const loadProfile = async () => {
