@@ -16,7 +16,8 @@ const useUsers = () => {
 }
 
 function UsersManagement() {
-    const [profile, setProfile] = useState<ProfileType | null>(null)
+    const [userId, setUserId] = useState<number | null>(null)
+    //const [profile, setProfile] = useState<ProfileType | null>(null)
 
     console.log('App rendered')
 
@@ -33,7 +34,7 @@ function UsersManagement() {
     return (
         <div className={'App'}>
             <List users={users} onClick={loadProfile}/>
-            <Details profile={profile}/>
+            <Details userId={userId}/>
         </div>
     )
 }
@@ -53,13 +54,23 @@ const List = React.memo(function (props: UsersPropsType) {
 })
 
 type DetailsPropsType = {
-    profile: ProfileType
+    userId: number | null
 }
 
+
+
 function Details(props: DetailsPropsType) {
+    const [profile, setProfile] = useState<ProfileType | null>(null)
     console.log('Details rendered')
 
-    if (props.profile === null) return <div>-----</div>
+    useEffect(() => {
+        if (props.userId === null) return
+
+    }, [])
+
+
+
+
     let photoSrc = props.profile.photos.small ? props.profile.photos.small : ''
 
     return (
